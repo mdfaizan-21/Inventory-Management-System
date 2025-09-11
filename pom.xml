@@ -4,6 +4,6 @@
   <groupId>org.example</groupId>
   <artifactId>Inventory-Management-System</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>Archetype - untitled</name>
+  <name>Archetype - Inventory-Management-System</name>
   <url>http://maven.apache.org</url>
 </project>
