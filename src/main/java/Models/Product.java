@@ -5,13 +5,15 @@ public class Product {
     private String productName;
     private String productType;
     private int availableQty ;
+    private double price;
 
 
-    public Product(int productId, String productName, String productType, int availableQty) {
+    public Product(int productId, String productName, String productType, int availableQty, double price) {
         this.productId=productId;
         this.productName = productName;
         this.productType = productType;
         this.availableQty = availableQty;
+        this.price=price;
     }
 
     public int getProductId() {
@@ -46,6 +48,14 @@ public class Product {
         this.availableQty = availableQty;
     }
 
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -53,6 +63,7 @@ public class Product {
                 ", productName='" + productName + '\'' +
                 ", productType='" + productType + '\'' +
                 ", availableQty=" + availableQty +
+                ", price=" + price +
                 '}';
     }
 }
