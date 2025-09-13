@@ -1,0 +1,133 @@
+package DAO;
+
+import Models.Product;
+import util.DBconnection;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProductDAO implements DAO {
+
+    @Override
+    public void AddProduct(Product product){
+        String sqlQuery="INSERT INTO PRODUCTS VALUES (?, ?, ?, ?, ?)";
+        try(Connection myconnection=DBconnection.getConnection();
+            PreparedStatement myQuery= myconnection.prepareStatement(sqlQuery)) {
+            myQuery.setInt(1, product.getProductId());
+            myQuery.setString(2,product.getProductName());
+            myQuery.setString(3,product.getProductType());
+            myQuery.setDouble(5, product.getPrice());
+            myQuery.setInt(4, product.getAvailableQty());
+            myQuery.executeUpdate();
+        }
+        catch (SQLException e){
+            System.out.println("There is some error in your Query");
+        }
+    }
+
+    @Override
+    public List<Product> getAllProducts() {
+        List<Product> productslist = new ArrayList<>();
+        String sql = "SELECT * FROM products";
+        try (Connection connection = DBconnection.getConnection();
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                Product p = new Product();
+                p.setProductId(rs.getInt("ProductId"));
+                p.setProductName(rs.getString("ProductName"));
+                p.setProductType(rs.getString("ProductCategory"));
+                p.setAvailableQty(rs.getInt("AvailableQuantity"));
+                p.setPrice(rs.getDouble("Price"));
+                productslist.add(p);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return productslist;
+    }
+
+    @Override
+    public Product getProductById(int productId) {
+        Product product = null;
+        String query = "SELECT * FROM products WHERE ProductId = ?";
+
+        try (Connection connection = DBconnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, productId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                product = new Product();
+                product.setProductId(resultSet.getInt("ProductId"));
+                product.setProductName(resultSet.getString("ProductName"));
+                product.setProductType(resultSet.getString("ProductCategory"));
+                product.setAvailableQty(resultSet.getInt("AvailableQuantity"));
+                product.setPrice(resultSet.getDouble("Price"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return product;
+    }
+
+    @Override
+    public void deleteProductById(int productId) {
+        String query = "DELETE FROM products WHERE ProductId = ?";
+
+        try (Connection connection = DBconnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, productId);
+
+            preparedStatement.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Product updateProduct(Product product) {
+        StringBuilder query = new StringBuilder("UPDATE products SET ");
+        List<Object> params = new ArrayList<>();
+
+        if (product.getProductName() != null) {
+            query.append("ProductName = ?, ");
+            params.add(product.getProductName());
+        }
+        if (product.getProductType() != null) {
+            query.append("ProductCategory = ?, ");
+            params.add(product.getProductType());
+        }
+        if (product.getAvailableQty() > 0) {
+            query.append("AvailableQuantity = ?, ");
+            params.add(product.getAvailableQty());
+        }
+        if (product.getPrice() > 0) {
+            query.append("Price = ?, ");
+            params.add(product.getPrice());
+        }
+
+        query.setLength(query.length() - 2);
+        query.append(" WHERE ProductId = ?");
+        params.add(product.getProductId());
+
+        try (Connection connection = DBconnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query.toString())) {
+
+            for (int i = 0; i < params.size(); i++) {
+                preparedStatement.setObject(i + 1, params.get(i));
+            }
+            preparedStatement.executeUpdate();
+            return getProductById(product.getProductId());
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return  null;
+    }
+
+}
+

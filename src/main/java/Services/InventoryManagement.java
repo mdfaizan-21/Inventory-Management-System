@@ -1,5 +1,6 @@
 package Services;
 
+import DAO.ProductDAO;
 import Models.Product;
 
 import java.util.*;
@@ -7,7 +8,7 @@ import java.util.*;
 public class InventoryManagement {
 
     private static final Map<Integer, Product> productList = new HashMap<>();
-
+    ProductDAO myProductDAO=new ProductDAO();
     public static Product InputHelper(Scanner scanner) {
         int id = 0;
         String name = null;
@@ -52,7 +53,7 @@ public class InventoryManagement {
     public void addElement(Scanner scanner) {
         Product newProduct = InputHelper(scanner);
         if (newProduct != null) {
-            productList.put(newProduct.getProductId(), newProduct);
+            myProductDAO.AddProduct(newProduct);
             System.out.println("Product added successfully.");
         } else {
             System.out.println("Product could not be added.");
@@ -61,42 +62,37 @@ public class InventoryManagement {
 
     // Read all products
     public List<Product> Read() {
-        return new ArrayList<>(productList.values());
+        return myProductDAO.getAllProducts();
     }
 
     public Product ReadById(int id) {
-        Product requiredProduct = productList.get(id);
+        Product requiredProduct = myProductDAO.getProductById(id);
         if (requiredProduct == null) {
             System.out.println("⚠ The product with ID " + id + " does not exist.");
         }
         return requiredProduct;
     }
 
-    // Delete product safely
     public void delete(int id) {
-        if (productList.containsKey(id)) {
-            productList.remove(id);
-            System.out.println("Product deleted successfully.");
+        Product requiredProduct = myProductDAO.getProductById(id);
+        if (requiredProduct!=null) {
+            myProductDAO.deleteProductById(id);
         } else {
             System.out.println("Cannot delete. Product with ID " + id + " not found.");
         }
     }
 
-    public Product update(int id, int newQuantity) {
-        Product oldProduct = productList.get(id);
+    public Product update(Product newProduct) {
+        Product oldProduct = myProductDAO.getProductById(newProduct.getProductId());
 
         if (oldProduct == null) {
-            System.out.println("⚠ Cannot update. Product with ID " + id + " not found.");
+            System.out.println("⚠ Cannot update. Product with ID " + newProduct.getProductId() + " not found.");
             return null;
         }
 
-        if (newQuantity < 0) {
-            System.out.println("⚠ Quantity cannot be negative.");
-            return null;
-        }
+        Product updatedProduct=myProductDAO.updateProduct(newProduct);
 
-        oldProduct.setAvailableQty(newQuantity);
         System.out.println("Product updated successfully.");
-        return oldProduct;
+        return updatedProduct;
     }
 }
