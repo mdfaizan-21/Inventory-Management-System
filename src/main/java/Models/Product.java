@@ -1,16 +1,16 @@
 package Models;
 
 public class Product {
-    private int productId;
+    private Integer productId;
     private String productName;
     private String productType;
-    private int availableQty ;
-    private double price;
+    private Integer availableQty ;
+    private Double price;
 
     public Product(){
 
     }
-    public Product(int productId, String productName, String productType, int availableQty, double price) {
+    public Product(Integer productId, String productName, String productType, Integer availableQty, Double price) {
         this.productId=productId;
         this.productName = productName;
         this.productType = productType;
@@ -18,11 +18,11 @@ public class Product {
         this.price=price;
     }
 
-    public int getProductId() {
+    public Integer getProductId() {
         return productId;
     }
 
-    public void setProductId(int productId) {
+    public void setProductId(Integer productId) {
         this.productId = productId;
     }
 
@@ -42,19 +42,19 @@ public class Product {
         this.productType = productType;
     }
 
-    public int getAvailableQty() {
+    public Integer getAvailableQty() {
         return availableQty;
     }
 
-    public void setAvailableQty(int availableQty) {
+    public void setAvailableQty(Integer availableQty) {
         this.availableQty = availableQty;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

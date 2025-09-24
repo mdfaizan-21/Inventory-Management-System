@@ -1,5 +1,6 @@
 package DAO;
 
+import Exceptions.ProductNotFoundException;
 import Models.Product;
 import util.DBconnection;
 
@@ -33,6 +34,9 @@ public class ProductDAO implements DAO {
         try (Connection connection = DBconnection.getConnection();
              Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
+            if(!rs.next()){
+                throw  new ProductNotFoundException("Product List is Empty");
+            }
             while (rs.next()) {
                 Product p = new Product();
                 p.setProductId(rs.getInt("ProductId"));
@@ -43,7 +47,10 @@ public class ProductDAO implements DAO {
                 productslist.add(p);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Error while Connecting to database");
+        }
+        catch (ProductNotFoundException e){
+            System.out.println(e.getMessage());
         }
         return productslist;
     }
@@ -67,8 +74,11 @@ public class ProductDAO implements DAO {
                 product.setAvailableQty(resultSet.getInt("AvailableQuantity"));
                 product.setPrice(resultSet.getDouble("Price"));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            else{
+                throw new ProductNotFoundException("Product with this id:-"+productId+" is not available in the list");
+            }
+        } catch (SQLException | ProductNotFoundException e) {
+            System.out.println("Error:- "+e.getMessage());
         }
         return product;
     }
@@ -124,7 +134,7 @@ public class ProductDAO implements DAO {
             return getProductById(product.getProductId());
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("There are some errors in the query");
         }
         return  null;
     }

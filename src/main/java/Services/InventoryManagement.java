@@ -1,6 +1,9 @@
 package Services;
 
 import DAO.ProductDAO;
+import Exceptions.DuplicateProductException;
+import Exceptions.InvalidProdcutDataException;
+import Exceptions.ProductNotFoundException;
 import Models.Product;
 
 import java.util.*;
@@ -21,7 +24,7 @@ public class InventoryManagement {
             id = scanner.nextInt();
 
             if (productList.containsKey(id)) {
-                throw new IllegalArgumentException("A product with this ID already exists.");
+                throw new DuplicateProductException("A product with this ID already exists.");
             }
 
             System.out.print("Enter your product Name:- ");
@@ -32,17 +35,17 @@ public class InventoryManagement {
 
             System.out.print("Enter the Quantity of Product:- ");
             qty = scanner.nextInt();
-            if (qty < 0) throw new IllegalArgumentException("Quantity cannot be negative.");
+            if (qty < 0) throw new InvalidProdcutDataException("Quantity cannot be negative.");
 
             System.out.print("Enter the Price of Product:- ");
             price = scanner.nextDouble();
-            if (price < 0) throw new IllegalArgumentException("Price cannot be negative.");
+            if (price < 0) throw new InvalidProdcutDataException("Price cannot be negative.");
 
         } catch (InputMismatchException e) {
             System.out.println("Invalid input! Please enter the correct data type.");
             scanner.nextLine(); // clear buffer
             return null;
-        } catch (IllegalArgumentException e) {
+        } catch (InvalidProdcutDataException | DuplicateProductException e) {
             System.out.println(e.getMessage());
             return null;
         }
@@ -50,10 +53,19 @@ public class InventoryManagement {
         return new Product(id, name, type, qty, price);
     }
 
-    public void addElement(Scanner scanner) {
+    public void addElementByInput(Scanner scanner) {
         Product newProduct = InputHelper(scanner);
         if (newProduct != null) {
             myProductDAO.AddProduct(newProduct);
+            System.out.println("Product added successfully.");
+        } else {
+            System.out.println("Product could not be added.");
+        }
+    }
+
+    public void addElementFromCSV(Product producttoAdd) {
+        if (producttoAdd != null) {
+            myProductDAO.AddProduct(producttoAdd);
             System.out.println("Product added successfully.");
         } else {
             System.out.println("Product could not be added.");
@@ -66,11 +78,7 @@ public class InventoryManagement {
     }
 
     public Product ReadById(int id) {
-        Product requiredProduct = myProductDAO.getProductById(id);
-        if (requiredProduct == null) {
-            System.out.println("⚠ The product with ID " + id + " does not exist.");
-        }
-        return requiredProduct;
+        return myProductDAO.getProductById(id);
     }
 
     public void delete(int id) {
@@ -78,7 +86,8 @@ public class InventoryManagement {
         if (requiredProduct!=null) {
             myProductDAO.deleteProductById(id);
         } else {
-            System.out.println("Cannot delete. Product with ID " + id + " not found.");
+            throw new ProductNotFoundException("Product with this id:-"+id+" cannot be deleted as this product is not available in list");
+
         }
     }
 

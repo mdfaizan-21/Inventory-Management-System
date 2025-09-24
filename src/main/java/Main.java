@@ -1,11 +1,14 @@
 import Models.Product;
 import Services.InventoryManagement;
+import util.CSVHelper;
+
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         InventoryManagement myInventoryManager=new InventoryManagement();
+        CSVHelper helper=new CSVHelper();
         Scanner scanner=new Scanner(System.in);
 
         while (true) {
@@ -15,24 +18,23 @@ public class Main {
             System.out.println("3.Search Product by Id");
             System.out.println("4.Delete the Product");
             System.out.println("5.Update the Product");
-            System.out.println("6.Exit the Menu");
+            System.out.println("6.Generate Report Of Our Inventory into CSV File");
+            System.out.println("7.Exit the Menu");
             int choice = scanner.nextInt();
 
             switch (choice) {
                 case 1:
-                    myInventoryManager.addElement(scanner);
+                    myInventoryManager.addElementByInput(scanner);
                     System.out.println("Your Product has been added successfully");
                     break;
 
                 case 2:
                     List<Product> products = myInventoryManager.Read();
-                    if(products.isEmpty())
-                        System.out.println("Product List is Empty");
-                    else {
+
                         for (Product product : products) {
                             System.out.println(product);
                         }
-                    }
+
                     break;
 
                 case 3:
@@ -100,9 +102,12 @@ public class Main {
                     break;
 
                 case 6:
+                    helper.generateReport();
+                    break;
+                case 7:
                     break;
             }
-            if(choice==6)break;
+            if(choice==7)break;
         }
 
         scanner.close();
