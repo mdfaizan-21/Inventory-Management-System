@@ -10,5 +10,6 @@ public interface DAO {
     Product getProductById(int id,boolean check);
     void deleteProductById(int id);
     Product updateProduct(Product product);
+    List<Product> getProductByCategory(String Category);
 
 }

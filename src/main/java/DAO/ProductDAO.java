@@ -34,7 +34,7 @@ public class ProductDAO implements DAO {
         try (Connection connection = DBconnection.getConnection();
              Statement stmt = connection.createStatement();
              ResultSet resultSet = stmt.executeQuery(sql)) {
-            if(resultSet!=null) {
+            if(resultSet.isBeforeFirst()) {
                 while (resultSet.next()) {
                     Product p = new Product();
                     p.setProductId(resultSet.getInt("ProductId"));
@@ -138,9 +138,38 @@ public class ProductDAO implements DAO {
             return getProductById(product.getProductId(),false);
 
         } catch (SQLException e) {
-            System.out.println("There are some erroresultSet in the query");
+            System.out.println("There are some errors in the query");
         }
         return  null;
+    }
+    public List<Product> getProductByCategory(String Category) {
+        List<Product> productslist = new ArrayList<>();
+        String sql = "SELECT * FROM products where ProductCategory= ?";
+        try (Connection connection = DBconnection.getConnection();
+             PreparedStatement preparedStatement=connection.prepareStatement(sql);) {
+            preparedStatement.setString(1,Category);
+            ResultSet resultSet=preparedStatement.executeQuery();
+            if(resultSet!=null) {
+                while (resultSet.next()) {
+                    Product p = new Product();
+                    p.setProductId(resultSet.getInt("ProductId"));
+                    p.setProductName(resultSet.getString("ProductName"));
+                    p.setProductType(resultSet.getString("ProductCategory"));
+                    p.setAvailableQty(resultSet.getInt("AvailableQuantity"));
+                    p.setPrice(resultSet.getDouble("Price"));
+                    productslist.add(p);
+                }
+            }
+            else {
+                throw  new ProductNotFoundException("There are no Products available in this category");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error while Connecting to database");
+        }
+        catch (ProductNotFoundException e){
+            System.out.println(e.getMessage());
+        }
+        return productslist;
     }
 
 }
