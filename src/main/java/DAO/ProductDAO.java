@@ -33,18 +33,20 @@ public class ProductDAO implements DAO {
         String sql = "SELECT * FROM products";
         try (Connection connection = DBconnection.getConnection();
              Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-            if(!rs.next()){
-                throw  new ProductNotFoundException("Product List is Empty");
+             ResultSet resultSet = stmt.executeQuery(sql)) {
+            if(resultSet!=null) {
+                while (resultSet.next()) {
+                    Product p = new Product();
+                    p.setProductId(resultSet.getInt("ProductId"));
+                    p.setProductName(resultSet.getString("ProductName"));
+                    p.setProductType(resultSet.getString("ProductCategory"));
+                    p.setAvailableQty(resultSet.getInt("AvailableQuantity"));
+                    p.setPrice(resultSet.getDouble("Price"));
+                    productslist.add(p);
+                }
             }
-            while (rs.next()) {
-                Product p = new Product();
-                p.setProductId(rs.getInt("ProductId"));
-                p.setProductName(rs.getString("ProductName"));
-                p.setProductType(rs.getString("ProductCategory"));
-                p.setAvailableQty(rs.getInt("AvailableQuantity"));
-                p.setPrice(rs.getDouble("Price"));
-                productslist.add(p);
+            else {
+                throw  new ProductNotFoundException("Product List is Empty");
             }
         } catch (SQLException e) {
             System.out.println("Error while Connecting to database");
@@ -56,7 +58,7 @@ public class ProductDAO implements DAO {
     }
 
     @Override
-    public Product getProductById(int productId) {
+    public Product getProductById(int productId,boolean fromInput) {
         Product product = null;
         String query = "SELECT * FROM products WHERE ProductId = ?";
 
@@ -74,8 +76,10 @@ public class ProductDAO implements DAO {
                 product.setAvailableQty(resultSet.getInt("AvailableQuantity"));
                 product.setPrice(resultSet.getDouble("Price"));
             }
-            else{
+            else {
+                if(!fromInput){
                 throw new ProductNotFoundException("Product with this id:-"+productId+" is not available in the list");
+                }
             }
         } catch (SQLException | ProductNotFoundException e) {
             System.out.println("Error:- "+e.getMessage());
@@ -111,11 +115,11 @@ public class ProductDAO implements DAO {
             query.append("ProductCategory = ?, ");
             params.add(product.getProductType());
         }
-        if (product.getAvailableQty() > 0) {
+        if (product.getAvailableQty() !=null) {
             query.append("AvailableQuantity = ?, ");
             params.add(product.getAvailableQty());
         }
-        if (product.getPrice() > 0) {
+        if (product.getPrice() !=null) {
             query.append("Price = ?, ");
             params.add(product.getPrice());
         }
@@ -131,10 +135,10 @@ public class ProductDAO implements DAO {
                 preparedStatement.setObject(i + 1, params.get(i));
             }
             preparedStatement.executeUpdate();
-            return getProductById(product.getProductId());
+            return getProductById(product.getProductId(),false);
 
         } catch (SQLException e) {
-            System.out.println("There are some errors in the query");
+            System.out.println("There are some erroresultSet in the query");
         }
         return  null;
     }
