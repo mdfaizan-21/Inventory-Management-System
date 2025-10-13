@@ -1,5 +1,8 @@
 package Helpers;
 
+import DAO.Impl.ProductDAOImpl;
+import DAO.ProductDAO;
+import Exceptions.ProductNotFoundException;
 import Models.Product;
 
 import java.util.HashSet;
@@ -8,12 +11,13 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class UpdateHelper {
+    static ProductDAO productDAO=new ProductDAOImpl();
     public static Product update(Scanner scanner,int productId){
-        Product productToUpdate = new Product();
-        productToUpdate.setProductId(productId);
+        Product productToUpdate = null;
 
-        System.out.print("🛠️ Enter the number of fields you want to update (max 4): ");
         try {
+            productToUpdate=productDAO.getProductById(productId,false);
+            System.out.print("🛠️ Enter the number of fields you want to update (max 4): ");
             int numberOfUpdation = scanner.nextInt();
             if(numberOfUpdation>4)throw new IllegalArgumentException("⚠️ Number of updates cannot be greater than 4.");
             Set<Integer> selected = new HashSet<>();
@@ -67,7 +71,7 @@ public class UpdateHelper {
             System.out.println("🚫 Invalid input! Please enter the correct data type.");
             return null;
         }
-        catch (IllegalArgumentException e)
+        catch (IllegalArgumentException | ProductNotFoundException e)
         {
             System.out.println("🚫 " + e.getMessage());
             return null;

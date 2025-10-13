@@ -1,5 +1,6 @@
-package DAO;
+package DAO.Impl;
 
+import DAO.ProductDAO;
 import Exceptions.ProductNotFoundException;
 import Models.Product;
 import util.DBconnection;
@@ -152,7 +153,7 @@ public class ProductDAOImpl implements ProductDAO {
 		     PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
 			preparedStatement.setString(1, Category);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			if (resultSet != null) {
+			if (resultSet.isBeforeFirst()) {
 				while (resultSet.next()) {
 					Product p = new Product();
 					p.setProductId(resultSet.getInt("ProductId"));
@@ -167,7 +168,8 @@ public class ProductDAOImpl implements ProductDAO {
 			}
 		} catch (SQLException e) {
 			System.out.println("Error while Connecting to database");
-		} catch (ProductNotFoundException e) {
+		}
+		catch (ProductNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
 		return productslist;
