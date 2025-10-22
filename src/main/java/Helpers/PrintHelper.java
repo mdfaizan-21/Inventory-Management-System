@@ -4,10 +4,12 @@ import DAO.UserDAO;
 import Models.Product;
 import Models.User;
 import Services.UserService;
-
-import java.util.InputMismatchException;
+import util.EmailUtil;
 import java.util.List;
 import java.util.Scanner;
+
+import static Services.OTPService.generateOTP;
+import static Services.OTPService.verifyOTP;
 
 public class PrintHelper {
     public static void printTheTable(List<Product> Products){
@@ -82,7 +84,6 @@ public class PrintHelper {
                 System.out.println(GREEN + "1️⃣  Yes, I already have an account");
                 System.out.println("2️⃣  No, I want to register" + RESET);
                 System.out.print(YELLOW + "\n👉 Enter your choice: " + RESET);
-
                 int choice = scanner.nextInt();
                 boolean existing = (choice == 1);
 
@@ -93,10 +94,28 @@ public class PrintHelper {
                     String userName = scanner.next();
                     System.out.print("🔑 Enter Password: ");
                     String password = scanner.next();
-
+                    String email=null;
+                    Integer generatedOTP=null;
                     user = UserService.login(userName, password);
 
                     if (user != null) {
+                        if(user.status==null){
+                            System.out.println("You are not verified to access Inventory");
+                            System.out.println("Enter your Email to get verified");
+                            email=scanner.next();
+                            int otp=generateOTP();
+                            EmailUtil.sendOTP(email,"OTP For Login","Your OTP for Login is "+otp);
+                            System.out.println("Enter the OTP received at your email");
+                            generatedOTP=scanner.nextInt();
+
+                            if(generatedOTP!=otp){
+                                System.out.println("Incorrect Otp please Try again");
+                                return null;
+                            }
+                            System.out.println("You are now verified to use Inventory");
+                            userDAO.addVerification(userName, "verified", email);
+                            return null;
+                        }
                         System.out.println(GREEN + "\n✅ Login successful! Welcome back, " + userName + "!" + RESET);
 
                         // 🕐 Smooth transition
@@ -118,12 +137,13 @@ public class PrintHelper {
                     String name = null;
                     String password = null;
                     String role = null;
-
+                    String email=null;
                     System.out.print("👤 Enter Username: ");
                     name = scanner.next();
                     if (userDAO.getUserByUserName(name)!=null)
                     {
                         System.out.println("User with this username already exist");
+                        return null;
                     }
 
                     System.out.print("🔑 Enter Password: ");
@@ -132,15 +152,16 @@ public class PrintHelper {
                     System.out.print("🎭 Enter Role (admin/user): ");
                     role = scanner.next();
 
+                    System.out.print(" Enter Your Email: ");
+                    email = scanner.next();
 
-                    User newUser = new User(name, password, role);
-                    userDAO.addUser(newUser);
-
-                    System.out.println(GREEN + "\n✅ Registration successful! You can now log in, " + name + "." + RESET);
+                    boolean verification=verifyOTP(email,name,password,role,scanner);
+                    String message=verification?"With verification":"Without Verification";
+                    System.out.println(GREEN + "\n✅ Registration successful! "+message+" You can now log in, " + name + "." + RESET);
 
                     // 🕐 Small transition delay before returning to log in
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
@@ -149,15 +170,13 @@ public class PrintHelper {
 
             System.out.println(YELLOW + "\n🚀 Redirecting to your dashboard..." + RESET);
             try {
-                Thread.sleep(1200);
+                Thread.sleep(700);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
 
         return user;
     }
-
-
 
 
 }

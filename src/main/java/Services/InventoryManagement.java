@@ -1,6 +1,7 @@
 package Services;
 
 import DAO.Impl.ProductDAOImpl;
+import Exceptions.DuplicateProductException;
 import Exceptions.ProductNotFoundException;
 import Helpers.InputOutputHelper;
 import Models.Product;
@@ -22,7 +23,14 @@ public class InventoryManagement {
 
 	public void addElementFromCSV(Product productToAdd) {
 		if (productToAdd != null) {
-			myProductDAO.AddProduct(productToAdd);
+
+            try {
+                myProductDAO.getProductById(productToAdd.getProductId(),false);
+                throw new DuplicateProductException("🚫 A product with this ID already exists.");
+            }
+            catch (ProductNotFoundException e){
+			    myProductDAO.AddProduct(productToAdd);
+            }
 		} else {
 			System.out.println("❌ Product could not be added!");
 		}
