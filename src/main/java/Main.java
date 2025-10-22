@@ -1,4 +1,6 @@
+import DAO.Impl.ReportsTrackerImpl;
 import DAO.Impl.UserDAOImpl;
+import DAO.ReportsTracker;
 import DAO.UserDAO;
 import Exceptions.ProductNotFoundException;
 import Helpers.PrintHelper;
@@ -7,7 +9,9 @@ import Models.Product;
 import Models.User;
 import Services.InventoryManagement;
 import util.CSVHelper;
+import util.EmailUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -16,8 +20,11 @@ public class Main {
 		InventoryManagement myInventoryManager = new InventoryManagement();
 		CSVHelper helper = new CSVHelper();
 		UserDAO userDAO = new UserDAOImpl();
+		ReportsTracker reportsTracker=new ReportsTrackerImpl();
 		Scanner scanner = new Scanner(System.in);
-		User user = PrintHelper.loginOrRegisterMenu(scanner,userDAO);
+		User user ;
+                while ((user=PrintHelper.loginOrRegisterMenu(scanner,userDAO))==null){
+                }
 
 		while (true) {
 			if (user.getRole().equalsIgnoreCase("USER")) {
@@ -97,13 +104,17 @@ public class Main {
 				case 8:
                 case 25:
                     System.out.println("📊 Generating report... ");
-					helper.generateReport();
+					String name= helper.generateReport();
+	                EmailUtil.sendReport(user.email,
+			                "Daily-Reports","The report has been attached in this mail",name);
+					reportsTracker.addReports(user.getUserName(), user.getEmail(),new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) );
+
 					break;
 
 				case 9:
 					System.out.println("📥 Importing products from CSV...");
-					helper.readDATAfromCSV();
-					System.out.println("✅ Products imported successfully!");
+					int count =helper.readDATFromCSV();
+					System.out.println("✅ "+count+" Products imported successfully!");
 					break;
 
                 case 26:

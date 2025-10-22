@@ -1,65 +1,87 @@
 package util;
 
+import Exceptions.DuplicateProductException;
 import Models.Product;
 import Services.InventoryManagement;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class CSVHelper {
-    public static final String FILE_NAME="products.csv";
-    InventoryManagement manager=new InventoryManagement();
 
-    public void generateReport() {
-        try (CSVWriter writer = new CSVWriter(new FileWriter(FILE_NAME))) {
+    public static final String REPORT_DIR = "report/";
+    InventoryManagement manager = new InventoryManagement();
+
+    public String generateReport() {
+        String FILE_NAME = null;
+
+        try {
+            File dir = new File(REPORT_DIR);
+            if (!dir.exists()) {
+                if (dir.mkdirs()) {
+                    System.out.println("📁 Directory created: " + dir.getAbsolutePath());
+                } else {
+                    System.out.println("🚫 Failed to create directory: " + dir.getAbsolutePath());
+                }
+            }
+
+            FILE_NAME = REPORT_DIR + "inventory_report_" +
+                    new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".csv";
+
             List<Product> productList = manager.Read();
 
             if (productList.isEmpty()) {
                 System.out.println("⚠️ No products available to generate report.");
-                return;
+                return null;
             }
 
-            // Header row
-            String[] header = {"ProductId", "ProductName", "Category", "Quantity", "Price"};
-            writer.writeNext(header);
+            try (CSVWriter writer = new CSVWriter(new FileWriter(FILE_NAME))) {
+                // Header
+                String[] header = {"ProductId", "ProductName", "Category", "Quantity", "Price"};
+                writer.writeNext(header);
 
-            // Write each product
-            for (Product product : productList) {
-                String[] productString = new String[5];
-                productString[0] = product.getProductId().toString();
-                productString[1] = product.getProductName();
-                productString[2] = product.getProductType();
-                productString[3] = product.getAvailableQty().toString();
-                productString[4] = product.getPrice().toString();
-
-                writer.writeNext(productString);
+                // Data rows
+                for (Product product : productList) {
+                    String[] data = {
+                            String.valueOf(product.getProductId()),
+                            product.getProductName(),
+                            product.getProductType(),
+                            String.valueOf(product.getAvailableQty()),
+                            String.valueOf(product.getPrice())
+                    };
+                    writer.writeNext(data);
+                }
             }
 
-            System.out.println("✅ Inventory report generated successfully at: " + FILE_NAME);
-
-        } catch (IOException e) {
-            System.out.println("🚫 Error writing CSV file: " + e.getMessage());
+            System.out.println("✅ Report generated at: " + FILE_NAME);
         } catch (Exception e) {
-            System.out.println("⚠️ Unexpected error while generating report: " + e.getMessage());
+            e.printStackTrace();
         }
+
+        return FILE_NAME;
     }
 
-    public void readDATAfromCSV() {
+
+
+    public int readDATFromCSV() {
+            int importedCount = 0;
+            int skippedCount = 0;
         try {
-            CSVReader reader = new CSVReader(new FileReader(FILE_NAME));
+            CSVReader reader = new CSVReader(new FileReader("products.csv"));
             String[] lines;
 
             // remove header
             lines = reader.readNext();
 
-            int importedCount = 0;
-            int skippedCount = 0;
 
             while ((lines = reader.readNext()) != null) {
                 try {
@@ -70,10 +92,15 @@ public class CSVHelper {
                             Integer.valueOf(lines[3]),
                             Double.valueOf(lines[4])
                     );
-
-                    System.out.println("✅ Added: " + newProduct);
-                    manager.addElementFromCSV(newProduct);
-                    importedCount++;
+                    try {
+                        manager.addElementFromCSV(newProduct);
+                        System.out.println("✅ Added: " + newProduct);
+                        importedCount++;
+                    }
+                    catch (DuplicateProductException e){
+                        System.out.println("Error:- "+e.getMessage());
+                        skippedCount++;
+                    }
 
                 } catch (NumberFormatException e) {
                     System.out.println("⚠️ Skipping row (invalid number format): " + Arrays.toString(lines));
@@ -93,6 +120,8 @@ public class CSVHelper {
         } catch (CsvValidationException e) {
             System.out.println("🚫 Invalid CSV format: " + e.getMessage());
         }
+        System.out.println(skippedCount+" rows has been skipped due to error or duplication");
+        return importedCount;
     }
 
 }

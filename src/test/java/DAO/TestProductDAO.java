@@ -74,6 +74,7 @@ public class TestProductDAO {
 				notFoundException.getMessage()
 		);
 	}
+
 	@Test
 	void testUpdateProduct() {
 		Product product = new Product(1009, "abc", "def", 123, 1234.0);
@@ -126,8 +127,6 @@ public class TestProductDAO {
 				()-> productDAO.getProductByCategory("random"));
 		assertEquals(notFoundException.getMessage(),"There are no Products available in this category");
 	}
-
-
 
 
 }

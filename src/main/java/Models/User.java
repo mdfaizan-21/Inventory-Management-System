@@ -6,16 +6,36 @@ public class User {
 	public String UserName;
 	public String Password;
 	public String Role;
+	public String email;
+	public String status;
 
-	public User( String userName, String password, String role) {
+
+	public User( String userName, String password, String role,String email,String status) {
 		UserName = userName;
 		Password = password;
 		Role = role;
+		this.email=email;
+		this.status=status;
 	}
 
 	public User() {
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
 	public String getUserName() {
 		return UserName;

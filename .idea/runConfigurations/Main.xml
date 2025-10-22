@@ -4,6 +4,8 @@
       <env name="DB-URL" value="jdbc:mysql://localhost:3306/product_tracker" />
       <env name="USERNAME" value="springstudent" />
       <env name="PASSWORD" value="Faizan@1234" />
+      <env name="MAIL_USER" value="d18227518@gmail.com" />
+      <env name="MAIL_PASS" value="veye vrvc nzgw qduv" />
     </envs>
     <option name="MAIN_CLASS_NAME" value="Main" />
     <module name="Inventory-Management-System" />
