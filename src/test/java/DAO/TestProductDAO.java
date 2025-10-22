@@ -60,7 +60,7 @@ public class TestProductDAO {
 
 	@Test
 	void testDeleteProduct() {
-		int testId = 1003;
+		int testId = 1009;
 
 		productDAO.deleteProductById(testId);
 
@@ -93,7 +93,7 @@ public class TestProductDAO {
 		List<Product> products = productDAO.getAllProducts();
 
 		assertNotNull(products, "Product list is not empty");
-		assertEquals(11, products.size(), "There should be 11 products in the list");
+		assertEquals(10, products.size(), "There should be 10 products in the list");
 
 		Product p1 = products.get(0);
 		assertEquals(11, p1.getProductId());

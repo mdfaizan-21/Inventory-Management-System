@@ -1,6 +1,5 @@
 package util;
 
-import DAO.ProductDAO;
 import Models.Product;
 import Services.InventoryManagement;
 import com.opencsv.CSVReader;
