@@ -13,7 +13,7 @@ public class ProductDAOImpl implements ProductDAO {
 
 	@Override
 	public void AddProduct(Product product) {
-		String sqlQuery = "INSERT INTO PRODUCTS VALUES (?, ?, ?, ?, ?)";
+		String sqlQuery = "INSERT INTO PRODUCTS(ProductId,ProductName,ProductCategory,AvailableQuantity,Price) VALUES (?, ?, ?, ?, ?)";
 		try (Connection myconnection = DBconnection.getConnection();
 		     PreparedStatement myQuery = myconnection.prepareStatement(sqlQuery)) {
 			myQuery.setInt(1, product.getProductId());
@@ -42,6 +42,7 @@ public class ProductDAOImpl implements ProductDAO {
 					p.setProductType(resultSet.getString("ProductCategory"));
 					p.setAvailableQty(resultSet.getInt("AvailableQuantity"));
 					p.setPrice(resultSet.getDouble("Price"));
+                    p.setThresholdLimit(resultSet.getInt("ThresholdLimit"));
 					productslist.add(p);
 				}
 			} else {
