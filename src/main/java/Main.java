@@ -8,11 +8,15 @@ import Helpers.UpdateHelper;
 import Models.Product;
 import Models.User;
 import Services.InventoryManagement;
+import Services.StockAlertService;
 import util.CSVHelper;
 import util.EmailUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 
 public class Main {
@@ -25,7 +29,15 @@ public class Main {
 		User user ;
                 while ((user=PrintHelper.loginOrRegisterMenu(scanner,userDAO))==null){
                 }
-
+        if(user.getRole().equalsIgnoreCase("ADMIN")){
+            User finalUser = user;
+            new Thread(()->{
+                StockAlertService alertService=new StockAlertService(finalUser);
+                ScheduledExecutorService scheduler=new ScheduledThreadPoolExecutor(1);
+                scheduler.scheduleAtFixedRate(alertService::alertAdmin,0,10, TimeUnit.MINUTES);
+            }).start();
+            System.out.println("✅ Stock Alert sent successfully to " + user.getEmail());
+        }
 		while (true) {
 			if (user.getRole().equalsIgnoreCase("USER")) {
 				PrintHelper.printUserMenu();

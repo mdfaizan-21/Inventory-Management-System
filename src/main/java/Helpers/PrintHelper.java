@@ -74,7 +74,6 @@ public class PrintHelper {
 
     public static User loginOrRegisterMenu(Scanner scanner, UserDAO userDAO) {
         User user = null;
-
         System.out.println(MAGENTA + "╔══════════════════════════════════════════════════════════════════════╗");
         System.out.println("║          📦  WELCOME TO INVENTORY MANAGEMENT SYSTEM  📦              ║");
         System.out.println("╚══════════════════════════════════════════════════════════════════════╝" + RESET);
@@ -82,9 +81,16 @@ public class PrintHelper {
             while (true) {
                 System.out.println(CYAN + "\n👋 Are you an existing user?" + RESET);
                 System.out.println(GREEN + "1️⃣  Yes, I already have an account");
-                System.out.println("2️⃣  No, I want to register" + RESET);
+                System.out.println("(Else) No, I want to register" + RESET);
                 System.out.print(YELLOW + "\n👉 Enter your choice: " + RESET);
-                int choice = scanner.nextInt();
+                int choice;
+                try {
+                 choice = scanner.nextInt();
+                } catch (Exception e) {
+                    System.out.println("Please enter the correct choice");
+                    scanner.nextLine();
+                    return null;
+                }
                 boolean existing = (choice == 1);
 
                 if (existing) {

@@ -6,9 +6,8 @@ public class Product {
 	private String productType;
 	private Integer availableQty;
 	private Double price;
-
+    private Integer thresholdLimit;
 	public Product() {
-
 	}
 
 	public Product(Integer productId, String productName, String productType, Integer availableQty, Double price) {
@@ -69,4 +68,12 @@ public class Product {
 				", price=" + price +
 				'}';
 	}
+
+    public Integer getThresholdLimit() {
+        return thresholdLimit;
+    }
+
+    public void setThresholdLimit(Integer thresholdLimit) {
+        this.thresholdLimit = thresholdLimit;
+    }
 }
