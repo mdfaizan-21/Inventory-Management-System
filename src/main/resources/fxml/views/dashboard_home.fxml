@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="ui.controllers.views.DashboardHomeController"
+      spacing="20" styleClass="view-container">
+    
+    <Text text="Dashboard Overview" styleClass="view-title">
+        <font>
+            <Font name="System Bold" size="28"/>
+        </font>
+    </Text>
+    
+    <Separator/>
+    
+    <!-- Statistics Cards -->
+    <GridPane hgap="20" vgap="20">
+        <columnConstraints>
+            <ColumnConstraints percentWidth="33.33"/>
+            <ColumnConstraints percentWidth="33.33"/>
+            <ColumnConstraints percentWidth="33.33"/>
+        </columnConstraints>
+        
+        <!-- Total Products Card -->
+        <VBox styleClass="dashboard-card" GridPane.columnIndex="0" spacing="10">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <Label text="📦 Total Products" styleClass="card-title">
+                <font>
+                    <Font size="18"/>
+                </font>
+            </Label>
+            <Label fx:id="totalProductsLabel" text="0" styleClass="card-value">
+                <font>
+                    <Font name="System Bold" size="36"/>
+                </font>
+            </Label>
+        </VBox>
+        
+        <!-- Low Stock Card -->
+        <VBox styleClass="dashboard-card-warning" GridPane.columnIndex="1" spacing="10">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <Label text="⚠️ Low Stock Items" styleClass="card-title">
+                <font>
+                    <Font size="18"/>
+                </font>
+            </Label>
+            <Label fx:id="lowStockLabel" text="0" styleClass="card-value">
+                <font>
+                    <Font name="System Bold" size="36"/>
+                </font>
+            </Label>
+        </VBox>
+        
+        <!-- Categories Card -->
+        <VBox styleClass="dashboard-card" GridPane.columnIndex="2" spacing="10">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <Label text="🗂️ Categories" styleClass="card-title">
+                <font>
+                    <Font size="18"/>
+                </font>
+            </Label>
+            <Label fx:id="categoriesLabel" text="0" styleClass="card-value">
+                <font>
+                    <Font name="System Bold" size="36"/>
+                </font>
+            </Label>
+        </VBox>
+    </GridPane>
+    
+    <!-- Recent Activity -->
+    <VBox spacing="10">
+        <Label text="Recent Activity" styleClass="section-title">
+            <font>
+                <Font name="System Bold" size="20"/>
+            </font>
+        </Label>
+        
+        <TableView fx:id="recentActivityTable" prefHeight="300">
+            <columns>
+                <TableColumn text="Product ID" prefWidth="100" fx:id="productIdCol"/>
+                <TableColumn text="Product Name" prefWidth="200" fx:id="productNameCol"/>
+                <TableColumn text="Category" prefWidth="150" fx:id="categoryCol"/>
+                <TableColumn text="Stock" prefWidth="100" fx:id="stockCol"/>
+                <TableColumn text="Price" prefWidth="100" fx:id="priceCol"/>
+            </columns>
+        </TableView>
+    </VBox>
+    
+    <!-- Quick Actions -->
+    <HBox spacing="15">
+        <Button text="🔄 Refresh Data" onAction="#handleRefresh" styleClass="primary-button" prefWidth="150"/>
+        <Button text="📊 Generate Report" onAction="#handleGenerateReport" styleClass="secondary-button" prefWidth="150"/>
+    </HBox>
+    
+</VBox>

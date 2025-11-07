@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="ui.controllers.views.ReportsController"
+      spacing="20" styleClass="view-container">
+    
+    <Text text="Reports & Analytics" styleClass="view-title">
+        <font>
+            <Font name="System Bold" size="28"/>
+        </font>
+    </Text>
+    
+    <Separator/>
+    
+    <VBox spacing="15">
+        <Label text="Generate and send inventory reports" styleClass="section-title">
+            <font>
+                <Font name="System Bold" size="16"/>
+            </font>
+        </Label>
+        
+        <HBox spacing="15" alignment="CENTER_LEFT">
+            <Button text="📊 Generate CSV Report" onAction="#handleGenerateReport" styleClass="primary-button" prefWidth="200"/>
+            <Button text="📧 Email Report" onAction="#handleEmailReport" styleClass="secondary-button" prefWidth="200"/>
+        </HBox>
+        
+        <Label fx:id="messageLabel" styleClass="error-label" visible="false" wrapText="true"/>
+    </VBox>
+    
+    <Separator/>
+    
+    <VBox spacing="10">
+        <Label text="Recent Reports" styleClass="section-title">
+            <font>
+                <Font name="System Bold" size="16"/>
+            </font>
+        </Label>
+        
+        <TableView fx:id="reportsTable" prefHeight="400">
+            <columns>
+                <TableColumn text="Date" prefWidth="200" fx:id="dateCol"/>
+                <TableColumn text="User" prefWidth="200" fx:id="userCol"/>
+                <TableColumn text="Email" prefWidth="300" fx:id="emailCol"/>
+            </columns>
+        </TableView>
+    </VBox>
+    
+</VBox>

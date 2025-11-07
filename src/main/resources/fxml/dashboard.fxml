@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="ui.controllers.DashboardController" styleClass="root">
+    
+    <!-- Top Menu Bar -->
+    <top>
+        <VBox styleClass="top-bar">
+            <MenuBar>
+                <Menu text="File">
+                    <MenuItem text="Import CSV" onAction="#handleImportCSV"/>
+                    <MenuItem text="Export CSV" onAction="#handleExportCSV"/>
+                    <SeparatorMenuItem/>
+                    <MenuItem text="Logout" onAction="#handleLogout"/>
+                    <MenuItem text="Exit" onAction="#handleExit"/>
+                </Menu>
+                <Menu text="Help">
+                    <MenuItem text="About" onAction="#handleAbout"/>
+                </Menu>
+            </MenuBar>
+            
+            <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
+                <padding>
+                    <Insets top="15" right="20" bottom="15" left="20"/>
+                </padding>
+                
+                <Label text="Inventory Management System" styleClass="header-title">
+                    <font>
+                        <Font name="System Bold" size="24"/>
+                    </font>
+                </Label>
+                
+                <Region HBox.hgrow="ALWAYS"/>
+                
+                <Label fx:id="userLabel" styleClass="user-label">
+                    <font>
+                        <Font size="14"/>
+                    </font>
+                </Label>
+            </HBox>
+        </VBox>
+    </top>
+    
+    <!-- Left Sidebar -->
+    <left>
+        <VBox styleClass="sidebar" spacing="10" prefWidth="200">
+            <padding>
+                <Insets top="20" right="10" bottom="20" left="10"/>
+            </padding>
+            
+            <Label text="Menu" styleClass="sidebar-title">
+                <font>
+                    <Font name="System Bold" size="16"/>
+                </font>
+            </Label>
+            
+            <Button text="📊 Dashboard" onAction="#showDashboard" styleClass="menu-button" maxWidth="Infinity"/>
+            <Button text="📦 View Products" onAction="#showViewProducts" styleClass="menu-button" maxWidth="Infinity"/>
+            <Button text="➕ Add Product" onAction="#showAddProduct" styleClass="menu-button" maxWidth="Infinity" fx:id="addProductBtn"/>
+            <Button text="✏️ Update Product" onAction="#showUpdateProduct" styleClass="menu-button" maxWidth="Infinity" fx:id="updateProductBtn"/>
+            <Button text="🗑️ Delete Product" onAction="#showDeleteProduct" styleClass="menu-button" maxWidth="Infinity" fx:id="deleteProductBtn"/>
+            <Button text="🔍 Search Products" onAction="#showSearchProducts" styleClass="menu-button" maxWidth="Infinity"/>
+            <Button text="📈 Reports" onAction="#showReports" styleClass="menu-button" maxWidth="Infinity"/>
+            <Button text="⚠️ Stock Alerts" onAction="#showStockAlerts" styleClass="menu-button" maxWidth="Infinity"/>
+        </VBox>
+    </left>
+    
+    <!-- Center Content Area -->
+    <center>
+        <StackPane fx:id="contentArea" styleClass="content-area">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+        </StackPane>
+    </center>
+    
+    <!-- Bottom Status Bar -->
+    <bottom>
+        <HBox styleClass="status-bar" alignment="CENTER_LEFT" spacing="20">
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+            
+            <Label fx:id="statusLabel" text="Ready" styleClass="status-label"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="dateTimeLabel" styleClass="datetime-label"/>
+        </HBox>
+    </bottom>
+    
+</BorderPane>

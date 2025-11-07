@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="ui.controllers.views.SearchProductsController"
+      spacing="20" styleClass="view-container">
+    
+    <Text text="Search Products" styleClass="view-title">
+        <font>
+            <Font name="System Bold" size="28"/>
+        </font>
+    </Text>
+    
+    <Separator/>
+    
+    <!-- Search Options -->
+    <VBox spacing="15">
+        <Label text="Search Options:" styleClass="section-title">
+            <font>
+                <Font name="System Bold" size="18"/>
+            </font>
+        </Label>
+        
+        <!-- Search by ID -->
+        <HBox spacing="15" alignment="CENTER_LEFT">
+            <Label text="By ID:" styleClass="form-label" prefWidth="120"/>
+            <TextField fx:id="idSearchField" promptText="Enter product ID" prefWidth="250" styleClass="text-field"/>
+            <Button text="🔍 Search by ID" onAction="#handleSearchById" styleClass="primary-button"/>
+        </HBox>
+        
+        <!-- Search by Category -->
+        <HBox spacing="15" alignment="CENTER_LEFT">
+            <Label text="By Category:" styleClass="form-label" prefWidth="120"/>
+            <ComboBox fx:id="categoryComboBox" promptText="Select category" editable="true" prefWidth="250" styleClass="combo-box">
+                <items>
+                    <javafx.collections.FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Electronics"/>
+                        <String fx:value="Clothing"/>
+                        <String fx:value="Food"/>
+                        <String fx:value="Books"/>
+                        <String fx:value="Furniture"/>
+                        <String fx:value="Toys"/>
+                        <String fx:value="Sports"/>
+                        <String fx:value="Beauty"/>
+                    </javafx.collections.FXCollections>
+                </items>
+            </ComboBox>
+            <Button text="🔍 Search by Category" onAction="#handleSearchByCategory" styleClass="primary-button"/>
+        </HBox>
+        
+        <!-- Search by Price Range -->
+        <HBox spacing="15" alignment="CENTER_LEFT">
+            <Label text="By Price Range:" styleClass="form-label" prefWidth="120"/>
+            <TextField fx:id="minPriceField" promptText="Min price" prefWidth="120" styleClass="text-field"/>
+            <Label text="to"/>
+            <TextField fx:id="maxPriceField" promptText="Max price" prefWidth="120" styleClass="text-field"/>
+            <Button text="🔍 Search by Price" onAction="#handleSearchByPrice" styleClass="primary-button"/>
+        </HBox>
+        
+        <!-- Clear Search -->
+        <HBox spacing="15">
+            <Button text="🔄 Show All Products" onAction="#handleShowAll" styleClass="secondary-button" prefWidth="180"/>
+        </HBox>
+    </VBox>
+    
+    <Separator/>
+    
+    <!-- Results -->
+    <VBox spacing="10" VBox.vgrow="ALWAYS">
+        <HBox alignment="CENTER_LEFT">
+            <Label text="Search Results" styleClass="section-title">
+                <font>
+                    <Font name="System Bold" size="18"/>
+                </font>
+            </Label>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="countLabel" text="0 products found" styleClass="count-label"/>
+        </HBox>
+        
+        <TableView fx:id="resultsTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn text="ID" prefWidth="80" fx:id="idCol"/>
+                <TableColumn text="Product Name" prefWidth="250" fx:id="nameCol"/>
+                <TableColumn text="Category" prefWidth="150" fx:id="categoryCol"/>
+                <TableColumn text="Quantity" prefWidth="120" fx:id="qtyCol"/>
+                <TableColumn text="Price" prefWidth="120" fx:id="priceCol"/>
+            </columns>
+        </TableView>
+    </VBox>
+    
+    <Label fx:id="messageLabel" styleClass="error-label" visible="false"/>
+    
+</VBox>

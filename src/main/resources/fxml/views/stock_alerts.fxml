@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="ui.controllers.views.StockAlertsController"
+      spacing="20" styleClass="view-container">
+    
+    <Text text="Stock Alerts" styleClass="view-title">
+        <font>
+            <Font name="System Bold" size="28"/>
+        </font>
+    </Text>
+    
+    <Separator/>
+    
+    <VBox spacing="15">
+        <Label text="⚠️ Products with low stock levels" styleClass="section-title">
+            <font>
+                <Font name="System Bold" size="16"/>
+            </font>
+        </Label>
+        
+        <HBox spacing="15">
+            <Button text="🔄 Refresh Alerts" onAction="#handleRefresh" styleClass="primary-button" prefWidth="150"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="alertCountLabel" text="0 alerts" styleClass="count-label">
+                <font>
+                    <Font size="14" />
+                </font>
+            </Label>
+        </HBox>
+    </VBox>
+    
+    <TableView fx:id="alertsTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn text="Product ID" prefWidth="100" fx:id="idCol"/>
+            <TableColumn text="Product Name" prefWidth="250" fx:id="nameCol"/>
+            <TableColumn text="Category" prefWidth="150" fx:id="categoryCol"/>
+            <TableColumn text="Current Stock" prefWidth="120" fx:id="stockCol"/>
+            <TableColumn text="Threshold" prefWidth="100" fx:id="thresholdCol"/>
+            <TableColumn text="Status" prefWidth="120" fx:id="statusCol"/>
+        </columns>
+    </TableView>
+    
+</VBox>

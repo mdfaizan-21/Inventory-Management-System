@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="ui.controllers.views.ViewProductsController"
+      spacing="20" styleClass="view-container">
+    
+    <Text text="View All Products" styleClass="view-title">
+        <font>
+            <Font name="System Bold" size="28"/>
+        </font>
+    </Text>
+    
+    <Separator/>
+    
+    <!-- Search and Filter Bar -->
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <TextField fx:id="searchField" promptText="Search by name or ID..." prefWidth="300" styleClass="text-field"/>
+        <Button text="🔍 Search" onAction="#handleSearch" styleClass="primary-button"/>
+        <Button text="🔄 Refresh" onAction="#handleRefresh" styleClass="secondary-button"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="countLabel" text="Total: 0 products" styleClass="count-label">
+            <font>
+                <Font size="14"/>
+            </font>
+        </Label>
+    </HBox>
+    
+    <!-- Products Table -->
+    <TableView fx:id="productsTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn text="ID" prefWidth="80" fx:id="idCol"/>
+            <TableColumn text="Product Name" prefWidth="250" fx:id="nameCol"/>
+            <TableColumn text="Category" prefWidth="150" fx:id="categoryCol"/>
+            <TableColumn text="Available Qty" prefWidth="120" fx:id="qtyCol"/>
+            <TableColumn text="Price" prefWidth="120" fx:id="priceCol"/>
+            <TableColumn text="Threshold" prefWidth="100" fx:id="thresholdCol"/>
+        </columns>
+    </TableView>
+    
+    <!-- Action Buttons -->
+    <HBox spacing="15">
+        <Button text="📋 View Details" onAction="#handleViewDetails" styleClass="primary-button" prefWidth="150"/>
+        <Button text="📊 Export to CSV" onAction="#handleExport" styleClass="secondary-button" prefWidth="150"/>
+    </HBox>
+    
+</VBox>

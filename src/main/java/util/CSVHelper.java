@@ -73,10 +73,14 @@ public class CSVHelper {
 
 
     public int readDATFromCSV() {
+        return readDATFromCSV("products.csv");
+    }
+
+    public int readDATFromCSV(String filePath) {
             int importedCount = 0;
             int skippedCount = 0;
         try {
-            CSVReader reader = new CSVReader(new FileReader("products.csv"));
+            CSVReader reader = new CSVReader(new FileReader(filePath));
             String[] lines;
 
             // remove header

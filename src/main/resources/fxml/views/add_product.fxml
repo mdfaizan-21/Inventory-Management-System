@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="ui.controllers.views.AddProductController"
+      spacing="20" styleClass="view-container">
+    
+    <Text text="Add New Product" styleClass="view-title">
+        <font>
+            <Font name="System Bold" size="28"/>
+        </font>
+    </Text>
+    
+    <Separator/>
+    
+    <!-- Add Product Form -->
+    <GridPane hgap="20" vgap="15" maxWidth="600">
+        <columnConstraints>
+            <ColumnConstraints percentWidth="30"/>
+            <ColumnConstraints percentWidth="70"/>
+        </columnConstraints>
+        
+        <!-- Product ID -->
+        <Label text="Product ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="form-label"/>
+        <TextField fx:id="productIdField" promptText="Enter product ID" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="text-field"/>
+        
+        <!-- Product Name -->
+        <Label text="Product Name:" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="form-label"/>
+        <TextField fx:id="productNameField" promptText="Enter product name" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="text-field"/>
+        
+        <!-- Category -->
+        <Label text="Category:" GridPane.columnIndex="0" GridPane.rowIndex="2" styleClass="form-label"/>
+        <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <ComboBox fx:id="categoryComboBox" promptText="Select or enter category" editable="true" prefWidth="400" styleClass="combo-box">
+                <items>
+                    <javafx.collections.FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Electronics"/>
+                        <String fx:value="Clothing"/>
+                        <String fx:value="Food"/>
+                        <String fx:value="Books"/>
+                        <String fx:value="Furniture"/>
+                        <String fx:value="Toys"/>
+                        <String fx:value="Sports"/>
+                        <String fx:value="Beauty"/>
+                    </javafx.collections.FXCollections>
+                </items>
+            </ComboBox>
+        </HBox>
+        
+        <!-- Quantity -->
+        <Label text="Available Qty:" GridPane.columnIndex="0" GridPane.rowIndex="3" styleClass="form-label"/>
+        <Spinner fx:id="quantitySpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="3" 
+                 prefWidth="200" styleClass="spinner">
+            <valueFactory>
+                <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="100000" initialValue="0"/>
+            </valueFactory>
+        </Spinner>
+        
+        <!-- Price -->
+        <Label text="Price:" GridPane.columnIndex="0" GridPane.rowIndex="4" styleClass="form-label"/>
+        <TextField fx:id="priceField" promptText="Enter price (e.g., 99.99)" GridPane.columnIndex="1" GridPane.rowIndex="4" styleClass="text-field"/>
+        
+        <!-- Threshold Limit -->
+        <Label text="Threshold Limit:" GridPane.columnIndex="0" GridPane.rowIndex="5" styleClass="form-label"/>
+        <Spinner fx:id="thresholdSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="5" 
+                 prefWidth="200" styleClass="spinner">
+            <valueFactory>
+                <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="1000" initialValue="10"/>
+            </valueFactory>
+        </Spinner>
+        
+        <!-- Info Label -->
+        <Label text="" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+        <Label text="(Alert will be triggered when stock falls below this limit)" 
+               GridPane.columnIndex="1" GridPane.rowIndex="6" styleClass="info-label" wrapText="true">
+            <font>
+                <Font size="11"/>
+            </font>
+        </Label>
+    </GridPane>
+    
+    <!-- Message Label -->
+    <Label fx:id="messageLabel" styleClass="error-label" visible="false" wrapText="true"/>
+    
+    <!-- Action Buttons -->
+    <HBox spacing="15">
+        <Button text="➕ Add Product" onAction="#handleAddProduct" styleClass="primary-button" prefWidth="150"/>
+        <Button text="🔄 Clear Form" onAction="#handleClear" styleClass="secondary-button" prefWidth="150"/>
+    </HBox>
+    
+</VBox>
