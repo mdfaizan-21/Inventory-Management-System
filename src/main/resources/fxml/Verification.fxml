@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" spacing="20" styleClass="root" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.VerificationController">
+    <padding>
+        <Insets top="40" right="40" bottom="40" left="40"/>
+    </padding>
+    
+    <Label text="📧 Email Verification" styleClass="title">
+        <font>
+            <Font name="System Bold" size="22"/>
+        </font>
+    </Label>
+    
+    <Label text="Your account is not verified. Please enter your email to receive a verification code." 
+           styleClass="subtitle" wrapText="true" maxWidth="400" alignment="CENTER"/>
+    
+    <VBox spacing="15" alignment="CENTER" maxWidth="400" styleClass="form-container">
+        <VBox spacing="5">
+            <Label text="Email Address:" styleClass="label"/>
+            <TextField fx:id="emailField" promptText="Enter your email address" styleClass="text-field"/>
+        </VBox>
+        
+        <VBox spacing="5">
+            <Label text="Verification Code:" styleClass="label"/>
+            <TextField fx:id="otpField" promptText="Enter the code sent to your email" styleClass="text-field" disable="true"/>
+        </VBox>
+        
+        <Label fx:id="messageLabel" styleClass="status-label" visible="false"/>
+        <Label fx:id="errorLabel" styleClass="error-label" visible="false"/>
+        
+        <HBox spacing="15" alignment="CENTER">
+            <Button fx:id="sendOtpButton" text="Send Code" onAction="#handleSendOTP" styleClass="primary-button" prefWidth="120"/>
+            <Button fx:id="verifyButton" text="Verify" onAction="#handleVerify" styleClass="primary-button" prefWidth="120" disable="true"/>
+            <Button text="Cancel" onAction="#handleCancel" styleClass="secondary-button" prefWidth="120"/>
+        </HBox>
+    </VBox>
+</VBox>

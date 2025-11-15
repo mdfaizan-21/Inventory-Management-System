@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DashboardController" styleClass="root">
+    
+    <!-- Top Bar -->
+    <top>
+        <VBox styleClass="header">
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="header-content">
+                <padding>
+                    <Insets top="15" right="20" bottom="15" left="20"/>
+                </padding>
+                
+                <Label text="📦 Inventory Management System" styleClass="header-title">
+                    <font>
+                        <Font name="System Bold" size="20"/>
+                    </font>
+                </Label>
+                
+                <Region HBox.hgrow="ALWAYS"/>
+                
+                <Label fx:id="userLabel" text="User: Admin" styleClass="user-label">
+                    <font>
+                        <Font size="14"/>
+                    </font>
+                </Label>
+                
+                <Button text="Logout" onAction="#handleLogout" styleClass="logout-button"/>
+            </HBox>
+        </VBox>
+    </top>
+    
+    <!-- Left Sidebar -->
+    <left>
+        <ScrollPane fitToWidth="true" styleClass="sidebar-scroll" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+            <VBox spacing="10" styleClass="sidebar" prefWidth="220">
+                <padding>
+                    <Insets top="20" right="10" bottom="20" left="10"/>
+                </padding>
+                
+                <Label text="Actions" styleClass="sidebar-title">
+                    <font>
+                        <Font name="System Bold" size="16"/>
+                    </font>
+                </Label>
+                
+                <Button text="📋 Show All Products" onAction="#handleShowAllProducts" styleClass="sidebar-button" maxWidth="Infinity"/>
+                <Button fx:id="addProductBtn" text="➕ Add Product" onAction="#handleAddProduct" styleClass="sidebar-button" maxWidth="Infinity"/>
+                <Button fx:id="updateProductBtn" text="✏️ Update Product" onAction="#handleUpdateProduct" styleClass="sidebar-button" maxWidth="Infinity"/>
+                <Button fx:id="deleteProductBtn" text="🗑️ Delete Product" onAction="#handleDeleteProduct" styleClass="sidebar-button" maxWidth="Infinity"/>
+                <Button text="🔄 Refresh" onAction="#handleRefresh" styleClass="sidebar-button" maxWidth="Infinity"/>
+                
+                <Separator/>
+                
+                <Label text="Search" styleClass="sidebar-title">
+                    <font>
+                        <Font name="System Bold" size="16"/>
+                    </font>
+                </Label>
+                
+                <TextField fx:id="searchByIdField" promptText="Search by ID" styleClass="search-field"/>
+                <Button text="🔍 Search" onAction="#handleSearchById" styleClass="sidebar-button" maxWidth="Infinity"/>
+                
+                <TextField fx:id="searchByCategoryField" promptText="Search by Category" styleClass="search-field"/>
+                <Button text="🗂️ Find" onAction="#handleSearchByCategory" styleClass="sidebar-button" maxWidth="Infinity"/>
+                
+                <Separator/>
+                
+                <Label text="Reports" styleClass="sidebar-title">
+                    <font>
+                        <Font name="System Bold" size="16"/>
+                    </font>
+                </Label>
+                
+                <Button fx:id="generateReportBtn" text="📊 Generate Report" onAction="#handleGenerateReport" styleClass="sidebar-button" maxWidth="Infinity"/>
+                <Button fx:id="importCsvBtn" text="📥 Import CSV" onAction="#handleImportCSV" styleClass="sidebar-button" maxWidth="Infinity"/>
+            </VBox>
+        </ScrollPane>
+    </left>
+    
+    <!-- Center - Product Table -->
+    <center>
+        <VBox spacing="10" styleClass="content">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            
+            <Label text="Product Inventory" styleClass="content-title">
+                <font>
+                    <Font name="System Bold" size="18"/>
+                </font>
+            </Label>
+            
+            <TableView fx:id="productTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="idColumn" text="ID" prefWidth="80" minWidth="80" maxWidth="100"/>
+                    <TableColumn fx:id="nameColumn" text="Name" prefWidth="250" minWidth="200"/>
+                    <TableColumn fx:id="categoryColumn" text="Category" prefWidth="180" minWidth="150"/>
+                    <TableColumn fx:id="quantityColumn" text="Quantity" prefWidth="120" minWidth="100"/>
+                    <TableColumn fx:id="priceColumn" text="Price" prefWidth="120" minWidth="120"/>
+                </columns>
+            </TableView>
+            
+            <Label fx:id="statusLabel" styleClass="status-label" visible="false"/>
+        </VBox>
+    </center>
+    
+</BorderPane>

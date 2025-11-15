@@ -11,12 +11,12 @@ import java.util.Properties;
 
 public class EmailUtil {
 	public static void sendReport(String toEmail, String subject, String body, String attachmentPath) {
-		final String fromEmail = System.getenv("MAIL_USER");  // your email
-		final String password = System.getenv("MAIL_PASS");   // your app password
+		final String fromEmail = "d18227518@gmail.com";
+		final String password = "veye vrvc nzgw qduv";
 
-		if (fromEmail == null || password == null) {
-			throw new RuntimeException("❌ Email credentials not set in environment variables!");
-		}
+//		if (fromEmail == null || password == null) {
+//			throw new RuntimeException("❌ Email credentials not set in environment variables!");
+//		}
 
 		// SMTP configuration
 		Properties props = new Properties();
@@ -61,12 +61,12 @@ public class EmailUtil {
 	}
 
 	public static void sendOTP(String toEmail, String subject, String body) {
-		final String fromEmail = System.getenv("MAIL_USER");  // your email
-		final String password = System.getenv("MAIL_PASS");   // your app password
+		final String fromEmail = "d18227518@gmail.com"; // your email
+		final String password = "veye vrvc nzgw qduv"; // your app password
 
-		if (fromEmail == null || password == null) {
-			throw new RuntimeException("❌ Email credentials not set in environment variables!");
-		}
+//		if (fromEmail == null || password == null) {
+//			throw new RuntimeException("❌ Email credentials not set in environment variables!");
+//		}
 
 		// SMTP configuration
 		Properties props = new Properties();
@@ -106,45 +106,46 @@ public class EmailUtil {
 			System.out.println("❌ Error sending email: " + e.getMessage());
 		}
 	}
-    public static void sendAlert(String toEmail, String subject, String body) {
-        final String fromEmail = System.getenv("MAIL_USER");  // your email
-        final String password = System.getenv("MAIL_PASS");   // your app password
 
-        if (fromEmail == null || password == null) {
-            throw new RuntimeException("❌ Email credentials not set in environment variables!");
-        }
+	public static void sendAlert(String toEmail, String subject, String body) {
+		final String fromEmail = "d18227518@gmail.com"; // your email
+		final String password = "veye vrvc nzgw qduv"; // your app password
 
-        // SMTP configuration
-        Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
+//		if (fromEmail == null || password == null) {
+//			throw new RuntimeException("❌ Email credentials not set in environment variables!");
+//		}
 
-        Session session = Session.getInstance(props, new Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(fromEmail, password);
-            }
-        });
+		// SMTP configuration
+		Properties props = new Properties();
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
 
-        try {
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(fromEmail));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
-            message.setSubject(subject);
+		Session session = Session.getInstance(props, new Authenticator() {
+			@Override
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(fromEmail, password);
+			}
+		});
 
-            MimeBodyPart htmlPart = new MimeBodyPart();
-            htmlPart.setContent(body, "text/html; charset=utf-8");
+		try {
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(fromEmail));
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
+			message.setSubject(subject);
 
-            Multipart multipart = new MimeMultipart();
-            multipart.addBodyPart(htmlPart);
+			MimeBodyPart htmlPart = new MimeBodyPart();
+			htmlPart.setContent(body, "text/html; charset=utf-8");
 
-            message.setContent(multipart);
+			Multipart multipart = new MimeMultipart();
+			multipart.addBodyPart(htmlPart);
 
-            Transport.send(message);
-        } catch (Exception e) {
-            System.out.println("❌ Error sending email: " + e.getMessage());
-        }
-    }
+			message.setContent(multipart);
+
+			Transport.send(message);
+		} catch (Exception e) {
+			System.out.println("❌ Error sending email: " + e.getMessage());
+		}
+	}
 }

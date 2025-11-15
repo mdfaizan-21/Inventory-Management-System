@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" spacing="20" styleClass="root" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ProductFormController">
+    <padding>
+        <Insets top="40" right="40" bottom="40" left="40"/>
+    </padding>
+    
+    <Label fx:id="titleLabel" text="Add Product" styleClass="title">
+        <font>
+            <Font name="System Bold" size="22"/>
+        </font>
+    </Label>
+    
+    <!-- Product Form -->
+    <VBox spacing="15" alignment="CENTER" maxWidth="500" styleClass="form-container">
+        <VBox spacing="5">
+            <Label text="Product ID:" styleClass="label"/>
+            <TextField fx:id="productIdField" promptText="Enter product ID" styleClass="text-field"/>
+        </VBox>
+        
+        <VBox spacing="5">
+            <Label text="Product Name:" styleClass="label"/>
+            <TextField fx:id="productNameField" promptText="Enter product name" styleClass="text-field"/>
+        </VBox>
+        
+        <VBox spacing="5">
+            <Label text="Category:" styleClass="label"/>
+            <TextField fx:id="categoryField" promptText="Enter category/type" styleClass="text-field"/>
+        </VBox>
+        
+        <VBox spacing="5">
+            <Label text="Quantity:" styleClass="label"/>
+            <TextField fx:id="quantityField" promptText="Enter quantity" styleClass="text-field"/>
+        </VBox>
+        
+        <VBox spacing="5">
+            <Label text="Price:" styleClass="label"/>
+            <TextField fx:id="priceField" promptText="Enter price" styleClass="text-field"/>
+        </VBox>
+        
+        <!-- Error Label -->
+        <Label fx:id="errorLabel" styleClass="error-label" visible="false"/>
+        
+        <!-- Buttons -->
+        <HBox spacing="15" alignment="CENTER">
+            <padding>
+                <Insets top="10"/>
+            </padding>
+            <Button text="Save" onAction="#handleSave" styleClass="primary-button" prefWidth="120"/>
+            <Button text="Cancel" onAction="#handleCancel" styleClass="secondary-button" prefWidth="120"/>
+        </HBox>
+    </VBox>
+</VBox>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" spacing="20" styleClass="root" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.RegisterController">
+    <padding>
+        <Insets top="40" right="40" bottom="40" left="40"/>
+    </padding>
+    
+    <Label text="📝 Register New Account" styleClass="title">
+        <font>
+            <Font name="System Bold" size="22"/>
+        </font>
+    </Label>
+    
+    <VBox spacing="15" alignment="CENTER" maxWidth="400" styleClass="form-container">
+        <VBox spacing="5">
+            <Label text="Username:" styleClass="label"/>
+            <TextField fx:id="usernameField" promptText="Enter username" styleClass="text-field"/>
+        </VBox>
+        
+        <VBox spacing="5">
+            <Label text="Password:" styleClass="label"/>
+            <PasswordField fx:id="passwordField" promptText="Enter password" styleClass="text-field"/>
+        </VBox>
+        
+        <VBox spacing="5">
+            <Label text="Email:" styleClass="label"/>
+            <TextField fx:id="emailField" promptText="Enter email address" styleClass="text-field"/>
+        </VBox>
+        
+        <VBox spacing="5">
+            <Label text="Role:" styleClass="label"/>
+            <ComboBox fx:id="roleComboBox" promptText="Select role" styleClass="combo-box" prefWidth="350">
+            </ComboBox>
+        </VBox>
+        
+        <Label fx:id="errorLabel" styleClass="error-label" visible="false"/>
+        
+        <HBox spacing="15" alignment="CENTER">
+            <Button text="Register" onAction="#handleRegister" styleClass="primary-button" prefWidth="120"/>
+            <Button text="Back to Login" onAction="#handleBackToLogin" styleClass="secondary-button" prefWidth="120"/>
+        </HBox>
+    </VBox>
+</VBox>
